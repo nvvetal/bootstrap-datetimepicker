@@ -800,7 +800,7 @@
       var currentYear = this.date.getUTCFullYear();
       var months = this.setTitle('.datetimepicker-months', year)
         .end()
-        .find('span').removeClass('active');
+        .find('span.month').removeClass('active');
       if (currentYear == year) {
         // getUTCMonths() returns 0 based, and we need to select the next one
         // To cater bootstrap 2 we don't need to select the next one
@@ -843,60 +843,60 @@
             && month <= this.startDate.getUTCMonth()
             && day <= this.startDate.getUTCDate()
             && hour <= this.startDate.getUTCHours()) {
-            this.picker.find('.prev').css({visibility: 'hidden'});
+            this.picker.find('.prev').css({visibility: 'hidden', 'pointer-events': 'none'});
           } else {
-            this.picker.find('.prev').css({visibility: 'visible'});
+            this.picker.find('.prev').css({visibility: 'visible', 'pointer-events': 'initial'});
           }
           if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
             && month >= this.endDate.getUTCMonth()
             && day >= this.endDate.getUTCDate()
             && hour >= this.endDate.getUTCHours()) {
-            this.picker.find('.next').css({visibility: 'hidden'});
+            this.picker.find('.next').css({visibility: 'hidden', 'pointer-events': 'none'});
           } else {
-            this.picker.find('.next').css({visibility: 'visible'});
+            this.picker.find('.next').css({visibility: 'visible', 'pointer-events': 'initial'});
           }
           break;
         case 1:
           if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
             && month <= this.startDate.getUTCMonth()
             && day <= this.startDate.getUTCDate()) {
-            this.picker.find('.prev').css({visibility: 'hidden'});
+            this.picker.find('.prev').css({visibility: 'hidden', 'pointer-events': 'none'});
           } else {
-            this.picker.find('.prev').css({visibility: 'visible'});
+            this.picker.find('.prev').css({visibility: 'visible', 'pointer-events': 'initial'});
           }
           if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
             && month >= this.endDate.getUTCMonth()
             && day >= this.endDate.getUTCDate()) {
-            this.picker.find('.next').css({visibility: 'hidden'});
+            this.picker.find('.next').css({visibility: 'hidden', 'pointer-events': 'none'});
           } else {
-            this.picker.find('.next').css({visibility: 'visible'});
+            this.picker.find('.next').css({visibility: 'visible', 'pointer-events': 'initial'});
           }
           break;
         case 2:
           if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
             && month <= this.startDate.getUTCMonth()) {
-            this.picker.find('.prev').css({visibility: 'hidden'});
+            this.picker.find('.prev').css({visibility: 'hidden', 'pointer-events': 'none'});
           } else {
-            this.picker.find('.prev').css({visibility: 'visible'});
+            this.picker.find('.prev').css({visibility: 'visible', 'pointer-events': 'initial'});
           }
           if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
             && month >= this.endDate.getUTCMonth()) {
-            this.picker.find('.next').css({visibility: 'hidden'});
+            this.picker.find('.next').css({visibility: 'hidden', 'pointer-events': 'none'});
           } else {
-            this.picker.find('.next').css({visibility: 'visible'});
+            this.picker.find('.next').css({visibility: 'visible', 'pointer-events': 'initial'});
           }
           break;
         case 3:
         case 4:
           if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()) {
-            this.picker.find('.prev').css({visibility: 'hidden'});
+            this.picker.find('.prev').css({visibility: 'hidden', 'pointer-events': 'none'});
           } else {
-            this.picker.find('.prev').css({visibility: 'visible'});
+            this.picker.find('.prev').css({visibility: 'visible', 'pointer-events': 'initial'});
           }
           if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()) {
-            this.picker.find('.next').css({visibility: 'hidden'});
+            this.picker.find('.next').css({visibility: 'hidden', 'pointer-events': 'none'});
           } else {
-            this.picker.find('.next').css({visibility: 'visible'});
+            this.picker.find('.next').css({visibility: 'visible', 'pointer-events': 'initial'});
           }
           break;
       }
