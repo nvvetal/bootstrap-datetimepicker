@@ -837,10 +837,8 @@
         month = d.getUTCMonth(),
         day = d.getUTCDate(),
         hour = d.getUTCHours();
-      //let activeCss = {visibility: 'visible', 'pointer-events': 'initial'},
-      //    disabledCss = {visibility: 'hidden', 'pointer-events': 'none'};
-        let activeCss = {visibility: 'visible'},
-            disabledCss = {visibility: 'hidden'};
+      let activeCss = {visibility: 'visible', 'pointer-events': 'initial'},
+          disabledCss = {visibility: 'hidden', 'pointer-events': 'none'};
       switch (this.viewMode) {
         case 0:
           if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
