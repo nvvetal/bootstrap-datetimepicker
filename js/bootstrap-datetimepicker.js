@@ -845,7 +845,7 @@
             && month <= this.startDate.getUTCMonth()
             && day <= this.startDate.getUTCDate()
             && hour <= this.startDate.getUTCHours()) {
-            this.picker.find('.prev').css(disabledCssv);
+            this.picker.find('.prev').css(disabledCss);
           } else {
             this.picker.find('.prev').css(activeCss);
           }
