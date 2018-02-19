@@ -837,66 +837,70 @@
         month = d.getUTCMonth(),
         day = d.getUTCDate(),
         hour = d.getUTCHours();
+      //let activeCss = {visibility: 'visible', 'pointer-events': 'initial'},
+      //    disabledCss = {visibility: 'hidden', 'pointer-events': 'none'};
+        let activeCss = {visibility: 'visible'},
+            disabledCss = {visibility: 'hidden'};
       switch (this.viewMode) {
         case 0:
           if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
             && month <= this.startDate.getUTCMonth()
             && day <= this.startDate.getUTCDate()
             && hour <= this.startDate.getUTCHours()) {
-            this.picker.find('.prev').css({visibility: 'hidden', 'pointer-events': 'none'});
+            this.picker.find('.prev').css(disabledCssv);
           } else {
-            this.picker.find('.prev').css({visibility: 'visible', 'pointer-events': 'initial'});
+            this.picker.find('.prev').css(activeCss);
           }
           if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
             && month >= this.endDate.getUTCMonth()
             && day >= this.endDate.getUTCDate()
             && hour >= this.endDate.getUTCHours()) {
-            this.picker.find('.next').css({visibility: 'hidden', 'pointer-events': 'none'});
+            this.picker.find('.next').css(disabledCss);
           } else {
-            this.picker.find('.next').css({visibility: 'visible', 'pointer-events': 'initial'});
+            this.picker.find('.next').css(activeCss);
           }
           break;
         case 1:
           if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
             && month <= this.startDate.getUTCMonth()
             && day <= this.startDate.getUTCDate()) {
-            this.picker.find('.prev').css({visibility: 'hidden', 'pointer-events': 'none'});
+            this.picker.find('.prev').css(disabledCss);
           } else {
-            this.picker.find('.prev').css({visibility: 'visible', 'pointer-events': 'initial'});
+            this.picker.find('.prev').css(activeCss);
           }
           if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
             && month >= this.endDate.getUTCMonth()
             && day >= this.endDate.getUTCDate()) {
-            this.picker.find('.next').css({visibility: 'hidden', 'pointer-events': 'none'});
+            this.picker.find('.next').css(disabledCss);
           } else {
-            this.picker.find('.next').css({visibility: 'visible', 'pointer-events': 'initial'});
+            this.picker.find('.next').css(activeCss);
           }
           break;
         case 2:
           if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
             && month <= this.startDate.getUTCMonth()) {
-            this.picker.find('.prev').css({visibility: 'hidden', 'pointer-events': 'none'});
+            this.picker.find('.prev').css(disabledCss);
           } else {
-            this.picker.find('.prev').css({visibility: 'visible', 'pointer-events': 'initial'});
+            this.picker.find('.prev').css(activeCss);
           }
           if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
             && month >= this.endDate.getUTCMonth()) {
-            this.picker.find('.next').css({visibility: 'hidden', 'pointer-events': 'none'});
+            this.picker.find('.next').css(disabledCss);
           } else {
-            this.picker.find('.next').css({visibility: 'visible', 'pointer-events': 'initial'});
+            this.picker.find('.next').css(activeCss);
           }
           break;
         case 3:
         case 4:
           if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()) {
-            this.picker.find('.prev').css({visibility: 'hidden', 'pointer-events': 'none'});
+            this.picker.find('.prev').css(disabledCss);
           } else {
-            this.picker.find('.prev').css({visibility: 'visible', 'pointer-events': 'initial'});
+            this.picker.find('.prev').css(activeCss);
           }
           if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()) {
-            this.picker.find('.next').css({visibility: 'hidden', 'pointer-events': 'none'});
+            this.picker.find('.next').css(disabledCss);
           } else {
-            this.picker.find('.next').css({visibility: 'visible', 'pointer-events': 'initial'});
+            this.picker.find('.next').css(activeCss);
           }
           break;
       }
