@@ -935,6 +935,23 @@
 
     },
 
+    _setToday: function() {
+      var date = new Date();
+      date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), 0);
+
+      // Respect startDate and endDate.
+      if (date < this.startDate) date = this.startDate;
+      else if (date > this.endDate) date = this.endDate;
+
+      this.viewMode = this.startViewMode;
+      this.showMode(0);
+      this._setDate(date);
+      this.fill();
+      if (this.autoclose) {
+        this.hide();
+      }
+    },
+
     click: function (e) {
       e.stopPropagation();
       e.preventDefault();
@@ -991,20 +1008,7 @@
                 }
                 break;
               case 'today':
-                var date = new Date();
-                date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), 0);
-
-                // Respect startDate and endDate.
-                if (date < this.startDate) date = this.startDate;
-                else if (date > this.endDate) date = this.endDate;
-
-                this.viewMode = this.startViewMode;
-                this.showMode(0);
-                this._setDate(date);
-                this.fill();
-                if (this.autoclose) {
-                  this.hide();
-                }
+                this._setToday();
                 break;
             }
             break;
@@ -1339,6 +1343,9 @@
           break;
         case 9: // tab
           this.hide();
+          break;
+        case 32: // space
+          this._setToday();
           break;
       }
       if (dateChanged) {
