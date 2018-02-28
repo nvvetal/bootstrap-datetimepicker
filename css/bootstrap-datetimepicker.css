@@ -301,6 +301,10 @@
 	border-radius: 4px;
 }
 
+.datetimepicker .datetimepicker-years span {
+	height: 26px;
+	line-height: 26px;
+}
 .datetimepicker .datetimepicker-hours span {
 	height: 26px;
 	line-height: 26px;

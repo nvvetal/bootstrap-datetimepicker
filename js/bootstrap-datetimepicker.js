@@ -800,7 +800,7 @@
       var currentYear = this.date.getUTCFullYear();
       var months = this.setTitle('.datetimepicker-months', year)
         .end()
-        .find('span').removeClass('active');
+        .find('span.month').removeClass('active');
       if (currentYear == year) {
         // getUTCMonths() returns 0 based, and we need to select the next one
         // To cater bootstrap 2 we don't need to select the next one
@@ -819,12 +819,12 @@
 
       html = '';
       year = parseInt(year / 10, 10) * 10;
-      var yearCont = this.setTitle('.datetimepicker-years', year + '-' + (year + 9))
+      var yearCont = this.setTitle('.datetimepicker-years', year + '-' + (year + 21))
         .end()
         .find('td');
       year -= 1;
-      for (var i = -1; i < 11; i++) {
-        html += '<span class="year' + (i == -1 || i == 10 ? ' old' : '') + (currentYear == year ? ' active' : '') + (year < startYear || year > endYear ? ' disabled' : '') + '">' + year + '</span>';
+      for (var i = -1; i < 23; i++) {
+        html += '<span class="year' + (i == -1 || i == 22 ? ' old' : '') + (currentYear == year ? ' active' : '') + (year < startYear || year > endYear ? ' disabled' : '') + '">' + year + '</span>';
         year += 1;
       }
       yearCont.html(html);
@@ -836,67 +836,69 @@
         year = d.getUTCFullYear(),
         month = d.getUTCMonth(),
         day = d.getUTCDate(),
-        hour = d.getUTCHours();
+        hour = d.getUTCHours(),
+        activeCss = {visibility: 'visible', 'pointer-events': 'initial'},
+        disabledCss = {visibility: 'hidden', 'pointer-events': 'none'};
       switch (this.viewMode) {
         case 0:
           if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
             && month <= this.startDate.getUTCMonth()
             && day <= this.startDate.getUTCDate()
             && hour <= this.startDate.getUTCHours()) {
-            this.picker.find('.prev').css({visibility: 'hidden'});
+            this.picker.find('.prev').css(disabledCss);
           } else {
-            this.picker.find('.prev').css({visibility: 'visible'});
+            this.picker.find('.prev').css(activeCss);
           }
           if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
             && month >= this.endDate.getUTCMonth()
             && day >= this.endDate.getUTCDate()
             && hour >= this.endDate.getUTCHours()) {
-            this.picker.find('.next').css({visibility: 'hidden'});
+            this.picker.find('.next').css(disabledCss);
           } else {
-            this.picker.find('.next').css({visibility: 'visible'});
+            this.picker.find('.next').css(activeCss);
           }
           break;
         case 1:
           if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
             && month <= this.startDate.getUTCMonth()
             && day <= this.startDate.getUTCDate()) {
-            this.picker.find('.prev').css({visibility: 'hidden'});
+            this.picker.find('.prev').css(disabledCss);
           } else {
-            this.picker.find('.prev').css({visibility: 'visible'});
+            this.picker.find('.prev').css(activeCss);
           }
           if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
             && month >= this.endDate.getUTCMonth()
             && day >= this.endDate.getUTCDate()) {
-            this.picker.find('.next').css({visibility: 'hidden'});
+            this.picker.find('.next').css(disabledCss);
           } else {
-            this.picker.find('.next').css({visibility: 'visible'});
+            this.picker.find('.next').css(activeCss);
           }
           break;
         case 2:
           if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
             && month <= this.startDate.getUTCMonth()) {
-            this.picker.find('.prev').css({visibility: 'hidden'});
+            this.picker.find('.prev').css(disabledCss);
           } else {
-            this.picker.find('.prev').css({visibility: 'visible'});
+            this.picker.find('.prev').css(activeCss);
           }
           if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
             && month >= this.endDate.getUTCMonth()) {
-            this.picker.find('.next').css({visibility: 'hidden'});
+            this.picker.find('.next').css(disabledCss);
           } else {
-            this.picker.find('.next').css({visibility: 'visible'});
+            this.picker.find('.next').css(activeCss);
           }
           break;
         case 3:
         case 4:
           if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()) {
-            this.picker.find('.prev').css({visibility: 'hidden'});
+            this.picker.find('.prev').css(disabledCss);
           } else {
-            this.picker.find('.prev').css({visibility: 'visible'});
+            this.picker.find('.prev').css(activeCss);
           }
           if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()) {
-            this.picker.find('.next').css({visibility: 'hidden'});
+            this.picker.find('.next').css(disabledCss);
           } else {
-            this.picker.find('.next').css({visibility: 'visible'});
+            this.picker.find('.next').css(activeCss);
           }
           break;
       }
@@ -931,6 +933,23 @@
 
       }, this), this.wheelViewModeNavigationDelay);
 
+    },
+
+    _setToday: function() {
+      var date = new Date();
+      date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), 0);
+
+      // Respect startDate and endDate.
+      if (date < this.startDate) date = this.startDate;
+      else if (date > this.endDate) date = this.endDate;
+
+      this.viewMode = this.startViewMode;
+      this.showMode(0);
+      this._setDate(date);
+      this.fill();
+      if (this.autoclose) {
+        this.hide();
+      }
     },
 
     click: function (e) {
@@ -989,20 +1008,7 @@
                 }
                 break;
               case 'today':
-                var date = new Date();
-                date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), 0);
-
-                // Respect startDate and endDate.
-                if (date < this.startDate) date = this.startDate;
-                else if (date > this.endDate) date = this.endDate;
-
-                this.viewMode = this.startViewMode;
-                this.showMode(0);
-                this._setDate(date);
-                this.fill();
-                if (this.autoclose) {
-                  this.hide();
-                }
+                this._setToday();
                 break;
             }
             break;
@@ -1338,6 +1344,9 @@
         case 9: // tab
           this.hide();
           break;
+        case 32: // space
+          this._setToday();
+          break;
       }
       if (dateChanged) {
         var element;
@@ -1471,7 +1480,7 @@
       {
         clsName: 'years',
         navFnc:  'FullYear',
-        navStep: 10
+        navStep: 25
       }
     ],
     isLeapYear:       function (year) {
@@ -1904,3 +1913,5 @@
   });
 
 }));
+
+//# sourceMappingURL=egis-bootstrap-datetimepicker.js.map
