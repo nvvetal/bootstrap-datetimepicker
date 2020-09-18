@@ -1626,47 +1626,49 @@
       setters_map['dd'] = setters_map['d'];
       setters_map['P'] = setters_map['p'];
       setters_map['Z'] = setters_map['z'];
+      if (parts.length !== format.parts.length) {
+        date = new Date();
+        return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), 0);
+      }
       date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
-      if (parts.length == format.parts.length) {
-        for (var i = 0, cnt = format.parts.length; i < cnt; i++) {
-          val = parseInt(parts[i], 10);
-          part = format.parts[i];
-          if (isNaN(val)) {
-            switch (part) {
-              case 'MM':
-                filtered = $(dates[language].months).filter(function () {
-                  var m = this.slice(0, parts[i].length),
-                    p = parts[i].slice(0, m.length);
-                  return m == p;
-                });
-                val = $.inArray(filtered[0], dates[language].months) + 1;
-                break;
-              case 'M':
-                filtered = $(dates[language].monthsShort).filter(function () {
-                  var m = this.slice(0, parts[i].length),
-                    p = parts[i].slice(0, m.length);
-                  return m.toLowerCase() == p.toLowerCase();
-                });
-                val = $.inArray(filtered[0], dates[language].monthsShort) + 1;
-                break;
-              case 'p':
-              case 'P':
-                val = $.inArray(parts[i].toLowerCase(), dates[language].meridiem);
-                break;
-              case 'z':
-              case 'Z':
-                timezone;
-                break;
+      for (var i = 0, cnt = format.parts.length; i < cnt; i++) {
+        val = parseInt(parts[i], 10);
+        part = format.parts[i];
+        if (isNaN(val)) {
+          switch (part) {
+            case 'MM':
+              filtered = $(dates[language].months).filter(function () {
+                var m = this.slice(0, parts[i].length),
+                  p = parts[i].slice(0, m.length);
+                return m == p;
+              });
+              val = $.inArray(filtered[0], dates[language].months) + 1;
+              break;
+            case 'M':
+              filtered = $(dates[language].monthsShort).filter(function () {
+                var m = this.slice(0, parts[i].length),
+                  p = parts[i].slice(0, m.length);
+                return m.toLowerCase() == p.toLowerCase();
+              });
+              val = $.inArray(filtered[0], dates[language].monthsShort) + 1;
+              break;
+            case 'p':
+            case 'P':
+              val = $.inArray(parts[i].toLowerCase(), dates[language].meridiem);
+              break;
+            case 'z':
+            case 'Z':
+              timezone;
+              break;
 
-            }
           }
-          parsed[part] = val;
         }
-        for (var i = 0, s; i < setters_order.length; i++) {
-          s = setters_order[i];
-          if (s in parsed && !isNaN(parsed[s]))
-            setters_map[s](date, parsed[s])
-        }
+        parsed[part] = val;
+      }
+      for (var i = 0, s; i < setters_order.length; i++) {
+        s = setters_order[i];
+        if (s in parsed && !isNaN(parsed[s]))
+          setters_map[s](date, parsed[s])
       }
       return date;
     },
