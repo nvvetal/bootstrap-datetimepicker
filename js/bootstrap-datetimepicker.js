@@ -1441,6 +1441,57 @@
   $.fn.datetimepicker.defaults = {
   };
   $.fn.datetimepicker.Constructor = Datetimepicker;
+
+  $.fn.datetimepicker._fillFormatted = function(format) {
+    this.DPGlobal.momentFormatted = this.DPGlobal.momentFormatted || {};
+    if (this.DPGlobal.momentFormatted[format]) {
+      return;
+    }
+    var parsed = this.DPGlobal.parseFormat(format, 'standard');
+    var momentFormat = [];
+    var momentPattern = [];
+    var formatterFormat = [];
+
+    var sep = [].concat(parsed.separators);
+    var self = this;
+    parsed.parts.forEach(function(p) {
+      if (sep.length) {
+        var separator = sep.shift();
+        momentFormat.push(separator);
+        momentPattern.push(separator);
+        formatterFormat.push(separator);
+      }
+      momentFormat.push(self.DPGlobal.FORMAT_TO_MOMENT_MAP[p].format);
+      var formatterSupported = self.DPGlobal.FORMAT_TO_MOMENT_MAP[p].formatter || p;
+      formatterFormat.push(formatterSupported);
+
+      momentPattern.push('{{' + self.DPGlobal.FORMAT_TO_MOMENT_MAP[formatterSupported].pattern + '}}');
+    });
+    // format: the relevant format for moment.js lib
+    // pattern: the relevant pattern for formatter.js lib
+    // formatter: the relevant format for formatter.js lib
+    this.DPGlobal.momentFormatted[format] = {
+      format: momentFormat.join(''),
+      pattern: momentPattern.join(''),
+      formatter: formatterFormat.join('')
+    };
+  }
+
+  $.fn.datetimepicker.formatToFormatter = function(format) {
+    this._fillFormatted(format);
+    return this.DPGlobal.momentFormatted[format].formatter;
+  }
+
+  $.fn.datetimepicker.formatToMoment = function(format) {
+    this._fillFormatted(format);
+    return this.DPGlobal.momentFormatted[format].format;
+  }
+
+  $.fn.datetimepicker.formatToPattern = function(format) {
+    this._fillFormatted(format);
+    return this.DPGlobal.momentFormatted[format].pattern;
+  }
+
   var dates = $.fn.datetimepicker.dates = {
     en: {
       days:        ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
@@ -1811,6 +1862,111 @@
                     '<tr><th colspan="7" class="today"></th></tr>' +
                     '<tr><th colspan="7" class="clear"></th></tr>' +
                   '</tfoot>'
+  };
+  DPGlobal.FORMAT_TO_MOMENT_MAP = {
+    t: {
+      format: 'x',
+          pattern: '9999999999999'
+    },
+    // year
+    yy: {
+      format: 'YY',
+          pattern: '99'
+    },
+    yyyy: {
+      format: 'YYYY',
+          pattern: '9999'
+    },
+    // month
+    m: {
+      format: 'M',
+          pattern: '99'
+    },
+    mm: {
+      format: 'MM',
+          pattern: '99'
+    },
+    M: {
+      format: 'MMM',
+          pattern: 'aaa'
+    },
+    MM: {
+      format: 'MMMM',
+          pattern: 'aaaaaaaa',
+          formatter: 'M'
+    },
+    // day
+    d:  {
+      format: 'D',
+          pattern: '99'
+    },
+    dd:  {
+      format: 'DD',
+          pattern: '99'
+    },
+    D:  {
+      format: 'ddd',
+          pattern: 'aaa'
+    },
+    DD: {
+      format: 'dddd',
+          pattern: 'aaaaaaaaa',
+          formatter: 'D'
+    },
+    p: {
+      format: 'a',
+          pattern: 'aa'
+    },
+    P: {
+      format: 'A',
+          pattern: 'aa'
+    },
+    // hour
+    // 0-23
+    h: {
+      format: 'H',
+          pattern: '99'
+    },
+    hh: {
+      format: 'HH',
+          pattern: '99'
+    },
+    // 0-12
+    H: {
+      format: 'h',
+          pattern: '99'
+    },
+    HH: {
+      format: 'hh',
+          pattern: '99'
+    },
+    // minute
+    i: {
+      format: 'm',
+          pattern: '99'
+    },
+    ii: {
+      format: 'mm',
+          pattern: '99'
+    },
+    // second
+    s:   {
+      format: 's',
+          pattern: '99'
+    },
+    ss:   {
+      format: 'ss',
+          pattern: '99'
+    },
+    // timezone
+    z:  {
+      format: 'Z',
+          pattern: '******'
+    },
+    Z:  {
+      format: 'ZZ',
+          pattern: '******'
+    }
   };
   DPGlobal.template = '<div class="datetimepicker">' +
     '<div class="datetimepicker-minutes">' +
