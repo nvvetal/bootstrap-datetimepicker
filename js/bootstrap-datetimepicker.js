@@ -594,7 +594,7 @@
       top = top - containerOffset.top;
       left = left - containerOffset.left;
 
-      if(!this.container.is('body')) {
+      if(this.container[0].scrollTop > 0) {
         top = offset.top + this.container[0].scrollTop - this.picker.outerHeight();
         if(top < 0) {
           top = offset.top + this.container[0].scrollTop + (this.component ? this.component[0].outerHeight() : this.element.outerHeight());
